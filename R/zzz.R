@@ -20,7 +20,7 @@
   #   }
   # }
 
-  reticulate_check_miniconda_setup(pyPackages = c('numpy', 'pandas'))
+  # reticulate_check_miniconda_setup(pyPackages = c('numpy', 'pandas'))
 
 }
 
@@ -48,9 +48,21 @@ reticulate_check_miniconda_setup <- function(pyPackages = NULL) {
       setupComplete <- FALSE
     }
 
-    return(setupComplete)
+  } else {
+
+    if (reticulate_miniconda_exists()) {
+        reticulate_check_dependencies(pyPackages)
+        setupComplete <- TRUE
+
+
+    } else {
+      message("You will need to install miniconda to use this function. You can either run this funciton again and select 'y' at the prompt to install or call `reticulate::install_miniconda()`.")
+      setupComplete <- FALSE
+    }
+
   }
 
+  return(setupComplete)
 
 
 }
