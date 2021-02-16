@@ -4,7 +4,7 @@
 \alias{testPy}
 \title{testPy}
 \usage{
-testPy(a, b)
+testPy()
 }
 \description{
 testPy
