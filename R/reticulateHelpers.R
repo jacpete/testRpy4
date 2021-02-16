@@ -9,7 +9,7 @@ reticulate_conda_list_packages <- function(envname = NULL, conda = 'auto', no_pi
 
   conda <- reticulate::conda_binary(conda)
   envname <- reticulate_condaenv_resolve(envname)
-  message(paste0("Using conda environment: ", envname))
+  # message(paste0("Using conda environment: ", envname))
 
   # create the environment
   args <- c("list")
@@ -89,5 +89,24 @@ reticulate_miniconda_conda <- function(path = reticulate::miniconda_path()) {
   exe <- if (reticulate_is_windows()) "condabin/conda.bat" else "bin/conda"
   file.path(path, exe)
 }
+
+
+
+# pyPackages <- c('numpy', 'pandas')
+
+reticulate_check_dependencies <- function(pyPackages) {
+
+  installedPyPackages <- reticulate_conda_list_packages()
+
+  toInstall <- pyPackages[!(pyPackages %in% installedPyPackages$package)]
+
+  if (length(toInstall) != 0) {
+    condaEnv <- dirname(reticulate::py_config()[['python']])
+    reticulate::conda_install(envname = condaEnv,
+                              packages = pyPackages)
+  }
+
+}
+
 
 
